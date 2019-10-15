@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,18 +49,25 @@ public class MainClass extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 		for(h=0;h<tablero.length;h++) {
 			for(l=0;l<tablero[h].length;l++) {
-				botones[h][l]=new JButton(" ");
+				botones[h][l]=new JButton(String.valueOf(h)+","+String.valueOf(l), new ImageIcon("/buscaminas/mina.png"));
 				add(botones[h][l]);
 				botones[h][l].addActionListener(new ActionListener() {
 				
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						
-						if(tablero[h][l]==1) {
-							ImageIcon mina=new ImageIcon(this.getClass().getResource("/buscaminas/mina.png"));
-							Icon i1=new ImageIcon(mina.getImage().getScaledInstance(botones[h][l].getWidth(), botones[h][l].getHeight(), Image.SCALE_DEFAULT));
-							botones[h][l].setIcon(i1);
+						 String command = ((JButton) e.getSource()).getActionCommand();
+						String [] identificaadoresBoton=command.split(",");
+						int num1,num2;
+						num1=Integer.parseInt(identificaadoresBoton[0]);
+						num2=Integer.parseInt(identificaadoresBoton[1]);
+						if(tablero[num1][num2]==1) {
+							System.out.println("fdlmgfdlgdfa");
+							ImageIcon mina=new ImageIcon("/buscaminas/mina.png");
+							Icon i1=new ImageIcon(mina.getImage());
+							//JButton okButton = new JButton("OK", new ImageIcon("ok.png"));
+							//Icon i1=new ImageIcon(mina.getImage().getScaledInstance(botones[h][l].getWidth(), botones[h][l].getHeight(), Image.SCALE_DEFAULT));
+						//botones[h][l].setIcon(new ImageIcon());
 						}
 					}
 				});
@@ -90,7 +96,7 @@ public class MainClass extends JFrame {
 		 tablero = new int[filas][columnas];
 		double azarFilas = 0;
 		double azarColumnas = 0;
-		int numeroDeMinas = (filas + columnas) / 3;
+		int numeroDeMinas = (filas * columnas) / 3;
 		for (int i = 0; i < tablero.length; i++)
 			for (int j = 0; j < tablero[i].length; j++)
 				tablero[i][j] = 0;
@@ -100,11 +106,10 @@ public class MainClass extends JFrame {
 			azarColumnas = Math.random() * columnas;
 			azarFilas = (int) azarFilas;
 			azarColumnas = (int) azarColumnas;
-			if (azarColumnas != 0 && azarFilas != 0 && azarColumnas != columnas - 1 && azarFilas != filas - 1) {
+			
 				tablero[(int) azarFilas][(int) azarColumnas] = 1;
 				numeroDeMinas--;
-			}
-		} while (numeroDeMinas > 0);
+			}while (numeroDeMinas > 0);
 
 	
 	}
